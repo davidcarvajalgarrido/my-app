@@ -4,13 +4,26 @@ import Header from './components/Header/Header'
 import Creature from './components/Creature/Creature'
 import Footer from './components/Footer/Footer'
 
+import { useState } from 'react'
+
 function App() {
   // logic presentation
-  // ...
 
-  // render
+  // let darkMode = false
+  const [darkMode, setDarkMode] = useState(false)
+
+  // renderization
   return (
-    <div>
+    <div className={ darkMode === true ? "dark-mode" : "light-mode" }>
+      <button
+        className={ darkMode !== true ? "dark-mode" : "light-mode" }
+        onClick={() => {
+          setDarkMode(!darkMode)
+        }}
+      >
+        Modo { darkMode === true ? "oscuro" : "claro" }
+      </button>
+
       {/* ---------- HEADER ---------- */}
       <Header />
 
