@@ -4,25 +4,39 @@ import Header from './components/Header/Header'
 import Creature from './components/Creature/Creature'
 import Footer from './components/Footer/Footer'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   // logic presentation
 
+  async function getData() {
+    try {
+      const response = await fetch("https://rickandmortyapi.com/api/character")
+      const data = await response.json()
+      //console.log(data)
+  
+      if (data?.results) {
+        setCreatures(data.results)
+      }
+      else {
+        setErrorData(true)
+      }
+    }
+    catch {
+      setErrorData(true)
+    }
+  }
+
   // let darkMode = false
   const [darkMode, setDarkMode] = useState(false)
-  const [creatures, setCreatures] = useState([
-    {
-      name: "Quimera",
-      image: "https://linguisimo.com/wp-content/uploads/Proyecto-nuevo-2023-12-23T121419-093.webp",
-      description: "La quimera es un monstruo de tres cabezas: cabra, león y dragón"
-    },
-    /*{
-      name: "Medusa",
-      image: "https://historyhogs.com/wp-content/uploads/2023/04/Medusa-.jpg",
-      description: "La medusa es una mujer con serpientes en la cabeza"
-    }*/
-  ])
+  const [creatures, setCreatures] = useState([])
+  const [errorData, setErrorData] = useState(false)
+
+  useEffect(() => {
+
+    getData()
+    
+  }, [])
 
   // renderization
   return (
@@ -61,13 +75,27 @@ function App() {
               name={creature.name}
               // name={name}
               image={creature.image}
-              description={creature.description}
+              description={creature.species}
               key={index}
             />
           )
         })
         :
-        <p>No hay datos</p>
+        <div>
+          <p>No hay datos</p>
+
+          <button
+            className={ darkMode !== true ? "dark-mode" : "light-mode" }
+            onClick={() => {
+              getData()
+            }}
+          >
+            Obtener datos
+          </button>
+
+          { errorData && <p>Hay error</p> }
+        </div>
+
       }
 
       {/* ---------- FOOTER ---------- */}
