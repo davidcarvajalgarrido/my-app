@@ -8,7 +8,7 @@ function Creature({ name, image, description }) {
 
       <img
         src={ image }
-        alt=""
+        alt="[IMAGEN_CRIATURA]"
         className="small-image"
       />
 
